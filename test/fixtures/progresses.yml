@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  exercise: one
+  user: one
+  date: 2024-12-19
+  type: 
+  reps: 1
+  weight: 9.99
+  duration: 9.99
+  intensity: 9.99
+
+two:
+  exercise: two
+  user: two
+  date: 2024-12-19
+  type: 
+  reps: 1
+  weight: 9.99
+  duration: 9.99
+  intensity: 9.99

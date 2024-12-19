@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  username: MyString
+  hash_password: MyString
+  weight: 1
+  height: 1
+  birth_day: 2024-12-19
+  goal: MyString
+  sex: MyString
+
+two:
+  username: MyString
+  hash_password: MyString
+  weight: 1
+  height: 1
+  birth_day: 2024-12-19
+  goal: MyString
+  sex: MyString
