@@ -75,11 +75,4 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_19_001712) do
     t.datetime "updated_at", null: false
     t.index ["username"], name: "index_users_on_username", unique: true
   end
-
-  add_foreign_key "day_exercises", "days"
-  add_foreign_key "day_exercises", "exercises"
-  add_foreign_key "progresses", "exercises"
-  add_foreign_key "progresses", "users"
-  add_foreign_key "train_days", "schedules"
-  add_foreign_key "train_schedules", "users"
 end
