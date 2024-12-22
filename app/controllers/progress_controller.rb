@@ -14,7 +14,7 @@ class ProgressController < ApplicationController
 
   # Получение прогресса по пользователю
   def index
-    Rails.logger.info "Fetching progress for user ID: #{params[:user_id]}"
+    Rails.logger.info "Fetching progress for users ID: #{params[:user_id]}"
     progresses = Progress.where(user_id: params[:user_id])
     render json: progresses.as_json(include: :exercise)
   end

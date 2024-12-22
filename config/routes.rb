@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  post '/users/register', to: 'users#register'
   resources :users, only: [:show, :update, :destroy]
 
   resources :exercises, only: [:create, :index, :update, :destroy]
@@ -8,6 +7,14 @@ Rails.application.routes.draw do
 
   resources :progress, only: [:create, :index, :destroy]
 
-  post '/auth/login', to: 'auth#login'
-  get '/auth/me', to: 'auth#me'
+
+  get '/users/:id', to: 'users#show', as: 'user_profile'
+
+  root 'users#new'
+
+  get '/users/register', to: 'users#new', as: 'new_user'
+
+  post '/users/register', to: 'users#create'
+
+  resources :users, only: [:new, :create]
 end

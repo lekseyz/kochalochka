@@ -1,7 +1,7 @@
 class TrainSchedulesController < ApplicationController
   # Создание расписания
   def create
-    Rails.logger.info "Creating train schedule for user ID: #{params[:user_id]} with days: #{params[:days].inspect}"
+    Rails.logger.info "Creating train schedule for users ID: #{params[:user_id]} with days: #{params[:days].inspect}"
     schedule = TrainSchedule.new
     if schedule.save
       params[:days].each do |day|

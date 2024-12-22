@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_19_001712) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_22_130730) do
   create_table "day_exercises", force: :cascade do |t|
     t.integer "day_id", null: false
     t.integer "exercise_id", null: false
@@ -73,6 +73,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_19_001712) do
     t.string "sex"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "password_digest"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 end

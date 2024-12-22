@@ -1,9 +1,8 @@
-class CreateUsers < ActiveRecord::Migration[6.1]
-  def change
-    unless table_exists?(:users)
+  class CreateUsers < ActiveRecord::Migration[6.0]
+    def change
       create_table :users do |t|
         t.string :username
-        t.string :hash_password
+        t.string :password_digest
         t.integer :weight
         t.integer :height
         t.date :birth_day
@@ -14,4 +13,3 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       end
     end
   end
-end
