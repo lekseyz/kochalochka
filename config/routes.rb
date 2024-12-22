@@ -1,20 +1,25 @@
 Rails.application.routes.draw do
-  resources :users, only: [:show, :update, :destroy]
+  get "home/index"
 
   resources :exercises, only: [:create, :index, :update, :destroy]
 
   resources :schedules, only: [:create, :show, :update, :destroy]
 
   resources :progress, only: [:create, :index, :destroy]
+  #REGISTRATION
+  resources :users, only: [:new, :create, :show]
 
 
-  get '/users/:id', to: 'users#show', as: 'user_profile'
 
-  root 'users#new'
 
-  get '/users/register', to: 'users#new', as: 'new_user'
+  get 'home', to: 'home#index'
 
-  post '/users/register', to: 'users#create'
+  #LOGIN
+  root 'sessions#new'
+  #get 'login', to: 'sessions#new', as: 'login'    # Форма для логина
+  #post 'login', to: 'sessions#create'               # Логин
+  #delete 'logout', to: 'sessions#destroy', as: 'logout'  # Выход
 
-  resources :users, only: [:new, :create]
+
+  resource :session, only: [:new, :create, :destroy]
 end

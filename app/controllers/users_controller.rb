@@ -1,15 +1,22 @@
 class UsersController < ApplicationController
+  before_action :require_logged_in, only: [:new]
   # Регистрация пользователя
   def new
-    @user = User.new
+    if current_user
+      redirect_to user_path(current_user)  # Перенаправляем на страницу профиля, если пользователь уже залогинен
+    else
+      @user = User.new
+    end
   end
+
 
   def create
     @user = User.new(user_params)
     if @user.save
-      redirect_to root_path, notice: "Пользователь успешно зарегистрирован"
+      session[:user_id] = @user.id
+      redirect_to home_path
     else
-      render :new
+      render :new  # Если регистрация не удалась, показываем ошибку
     end
   end
   def register
@@ -28,8 +35,6 @@ class UsersController < ApplicationController
   # Получение информации о пользователе
   def show
     @user = User.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    redirect_to new_user_registration_path, alert: 'User not found'
   end
 
   # Обновление данных пользователя
@@ -72,5 +77,11 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:username, :password, :password_confirmation, :weight, :height, :birth_day, :goal, :sex)
+  end
+
+  def require_logged_in
+    if current_user
+      redirect_to home_path  # Если пользователь уже авторизован, перенаправляем его на главную
+    end
   end
 end
