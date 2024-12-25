@@ -1,4 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Exercises</title>
+  <style>
+      body {
+          font-family: 'Arial', sans-serif;
+          background-color: #f4f7fc;
+          margin: 0;
+          padding: 0;
+      }
+
+      h1 {
+          text-align: center;
+          color: #333;
+          margin-top: 40px;
+          font-size: 2.5em;
+      }
+
+      table {
+          width: 80%;
+          margin: 20px auto;
+          border-collapse: collapse;
+          background-color: #ffffff;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      th, td {
+          padding: 15px;
+          text-align: left;
+          font-size: 1.1em;
+      }
+
+      th {
+          background-color: #0056b3;
+          color: white;
+      }
+
+      tr:nth-child(even) {
+          background-color: #f2f2f2;
+      }
+
+      tr:hover {
+          background-color: #f1f1f1;
+      }
+
+      td small {
+          font-size: 0.8em;
+          color: #888;
+      }
+
+      td a {
+          text-decoration: none;
+          color: #fff;
+          background-color: #007BFF;
+          padding: 8px 15px;
+          border-radius: 4px;
+          transition: background-color 0.3s ease;
+      }
+
+      td a:hover {
+          background-color: #0056b3;
+      }
+
+      .btn {
+          display: block;
+          width: 200px;
+          margin: 30px auto;
+          padding: 12px 20px;
+          background-color: #0056b3;
+          color: white;
+          font-size: 1.2em;
+          text-align: center;
+          border-radius: 5px;
+          text-decoration: none;
+          transition: background-color 0.3s ease;
+      }
+
+      .btn:hover {
+          background-color: #0056b3;
+      }
+  </style>
+</head>
+<body>
+
 <h1>Your Exercises</h1>
+
 <table>
   <thead>
   <tr>
@@ -15,18 +103,23 @@
       <td><%= exercise.exercise_type %></td>
       <td>
         <% if exercise.last_updated %>
-          <%= "#{exercise.reps} reps, #{exercise.weight} kg" if exercise.type == 'strength' %>
-          <%= "#{exercise.duration} min, #{exercise.intensity} intensity" if exercise.type == 'cardio' %>
+          <%= "#{exercise.reps} reps, #{exercise.weight} kg" if exercise.exercise_type == 'strength' %>
+          <%= "#{exercise.duration} min, #{exercise.intensity} intensity" if exercise.exercise_type == 'cardio' %>
           <small>(updated on <%= exercise.last_updated %>)</small>
         <% else %>
           No progress recorded
         <% end %>
       </td>
       <td>
-        <%= link_to 'Edit', edit_user_exercise_path(@user, exercise) %>
+        <%= link_to 'Edit', edit_user_exercise_path(@user, exercise), class: 'btn' %>
       </td>
     </tr>
   <% end %>
   </tbody>
 </table>
-<%= link_to 'Add Exercise', new_user_exercise_path(@user), class: 'btn btn-primary' %>
+
+
+<%= link_to 'Add Exercise', new_user_exercise_path(@user), class: 'btn' %>
+
+</body>
+</html>

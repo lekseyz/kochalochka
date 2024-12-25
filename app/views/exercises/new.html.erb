@@ -1,48 +1,49 @@
-<h1>New Exercise</h1>
+<h1 class="text-center text-primary mb-4">New Exercise</h1>
 
-<%= form_with(model: [@user, @exercise], local: true) do |f| %>
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+<%= form_with(model: [@user, @exercise], local: true, class: 'exercise-form') do |f| %>
+  <div class="form-group mb-3">
+    <%= f.label :name, class: 'form-label' %>
+    <%= f.text_field :name, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= f.label :muscle_group %>
-    <%= f.text_field :muscle_group %>
+  <div class="form-group mb-3">
+    <%= f.label :muscle_group, class: 'form-label' %>
+    <%= f.text_field :muscle_group, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= f.label :exercise_type %>
-    <%= f.select :exercise_type, ['strength', 'stretch', 'cardio'] %>
+  <div class="form-group mb-3">
+    <%= f.label :exercise_type, class: 'form-label' %>
+    <%= f.select :exercise_type, ['strength', 'stretch', 'cardio'], {}, class: 'form-select' %>
   </div>
 
-  <div>
-    <%= f.label :link %>
-    <%= f.text_field :link %>
+  <div class="form-group mb-3">
+    <%= f.label :link, class: 'form-label' %>
+    <%= f.text_field :link, class: 'form-control' %>
   </div>
 
-  <h3>Exercise Details</h3>
-  <div>
-    <%= label_tag :sets %>
-    <%= number_field_tag :sets %>
+  <h3 class="text-primary mt-4">Exercise Details</h3>
+
+  <div class="form-group mb-3">
+    <%= f.label :sets, class: 'form-label' %>
+    <%= f.number_field :sets, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= label_tag :reps %>
-    <%= number_field_tag :reps %>
+  <div class="form-group mb-3">
+    <%= f.label :reps, class: 'form-label' %>
+    <%= f.number_field :reps, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= label_tag :weight %>
-    <%= number_field_tag :weight %>
+  <div class="form-group mb-3">
+    <%= f.label :weight, class: 'form-label' %>
+    <%= f.number_field :weight, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= label_tag :duration %>
-    <%= number_field_tag :duration %>
+  <div class="form-group mb-3">
+    <%= f.label :duration, class: 'form-label' %>
+    <%= f.number_field :duration, class: 'form-control' %>
   </div>
 
-  <div>
-    <%= submit_tag 'Save', class: 'btn btn-success' %>
+  <div class="d-flex justify-content-center">
+    <%= f.submit 'Save', class: 'btn btn-primary' %>
   </div>
 <% end %>

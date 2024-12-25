@@ -5,7 +5,6 @@ class ExercisesController < ApplicationController
     @exercises = Exercise
                    .joins("LEFT JOIN progresses ON exercises.id = progresses.exercise_id AND progresses.user_id = #{@user.id}")
                    .select('exercises.*, MAX(progresses.date) AS last_updated, progresses.reps, progresses.weight, progresses.duration, progresses.intensity')
-                   .where(id: @user.id)
                    .group('exercises.id, progresses.reps, progresses.weight, progresses.duration, progresses.intensity')
   end
 

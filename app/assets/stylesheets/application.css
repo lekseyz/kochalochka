@@ -1,10 +1,78 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+/* Основные стили для страницы с формой */
+body {
+    background-color: #f0f8ff; /* светлый фон */
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+/* Заголовки */
+h1, h3 {
+    color: #1e3a8a; /* синий цвет */
+}
+
+/* Стили для формы */
+.exercise-form {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #1e3a8a; /* синий цвет */
+}
+
+.form-control, .form-select {
+    background-color: #e6f0ff;
+    border: 1px solid #b8c8f3;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 0.2rem rgba(30, 58, 138, 0.25);
+}
+
+/* Стили для кнопки */
+.btn {
+    background-color: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #3b82f6; /* более яркий синий при наведении */
+}
+
+/* Для блока с кнопкой */
+.d-flex {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    .exercise-form {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+}
