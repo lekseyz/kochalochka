@@ -41,6 +41,9 @@
       <% else %>
         <a href="<%= new_session_path %>">Войти</a>
       <% end %>
+      <button style="align-self: center" type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#accountModal">
+        Аккаунт
+      </button>
     </nav>
 
     <!-- Основной контент -->
@@ -50,13 +53,13 @@
         <p class="lead">Это заглушка для главной страницы вашего приложения.</p>
         <p>Здесь может быть размещена основная информация или приветствие.</p>
       </div>
+
     </main>
   </div>
+
 </div>
 
-<button type="button" class="btn btn-secondary mt-3" data-bs-toggle="modal" data-bs-target="#accountModal">
-  Аккаунт
-</button>
+
 
 <!-- Модальное окно для редактирования данных аккаунта -->
 <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalLabel" aria-hidden="true">
