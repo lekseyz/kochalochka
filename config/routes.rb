@@ -1,18 +1,17 @@
 Rails.application.routes.draw do
   get "home/index"
 
-  resources :schedules, only: [:create, :show, :update, :destroy]
+  resources :schedules, only: [ :create, :show, :update, :destroy ]
 
-  resources :progress, only: [:create, :index, :destroy]
+  resources :progress, only: [ :create, :index, :destroy ]
   #REGISTRATION
-  resources :users, only: [:new, :create, :show]
+  resources :users, only: [ :new, :create, :show ]
   resources :users do
-    resources :exercises, only: [:edit, :index, :new, :create]
+    resources :exercises, only: [ :edit, :index, :new, :create ]
   end
 
-
-
-
+  get 'train_schedules/:user_id', to: 'train_schedules#index', as: 'train_schedules'
+  get 'schedule/:user_id' => 'train_schedules#show'
   get 'home', to: 'home#index'
 
   #LOGIN
@@ -22,5 +21,5 @@ Rails.application.routes.draw do
   #delete 'logout', to: 'sessions#destroy', as: 'logout'  # Выход
 
 
-  resource :session, only: [:new, :create, :destroy]
+  resource :session, only: [ :new, :create, :destroy ]
 end

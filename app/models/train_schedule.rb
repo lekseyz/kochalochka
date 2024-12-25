@@ -1,3 +1,4 @@
 class TrainSchedule < ApplicationRecord
-  has_one :user
+  belongs_to :user
+  has_many :day_exercises
 end

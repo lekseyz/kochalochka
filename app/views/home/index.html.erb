@@ -37,6 +37,7 @@
       <a href="/">Главная</a>
       <% if session[:user_id] %>
         <a href="<%= user_exercises_path(session[:user_id]) %>">Упражнения</a>
+        <a href="<%= train_schedules_path(session[:user_id]) %>">Расписание</a>
         <%= button_to 'Выйти', session_path, method: :delete, class: 'btn btn-danger mt-3 w-100' %>
       <% else %>
         <a href="<%= new_session_path %>">Войти</a>

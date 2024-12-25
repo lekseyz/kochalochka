@@ -10,18 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_25_110510) do
-  create_table "day_exercises", force: :cascade do |t|
-    t.integer "day_id", null: false
+ActiveRecord::Schema[8.0].define(version: 2024_12_19_001712) do
+  create_table "exercise_schedules", force: :cascade do |t|
+    t.integer "train_schedule_id", null: false
     t.integer "exercise_id", null: false
-    t.integer "sets"
-    t.integer "reps"
-    t.decimal "weight"
-    t.decimal "duration"
+    t.string "day_of_week"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["day_id"], name: "index_day_exercises_on_day_id"
-    t.index ["exercise_id"], name: "index_day_exercises_on_exercise_id"
+    t.index ["exercise_id"], name: "index_exercise_schedules_on_exercise_id"
+    t.index ["train_schedule_id"], name: "index_exercise_schedules_on_train_schedule_id"
   end
 
   create_table "exercises", force: :cascade do |t|
@@ -48,14 +45,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_25_110510) do
     t.index ["user_id"], name: "index_progresses_on_user_id"
   end
 
-  create_table "train_days", force: :cascade do |t|
-    t.integer "schedule_id", null: false
-    t.string "day_of_week"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["schedule_id"], name: "index_train_days_on_schedule_id"
-  end
-
   create_table "train_schedules", force: :cascade do |t|
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
@@ -65,7 +54,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_25_110510) do
 
   create_table "users", force: :cascade do |t|
     t.string "username"
-    t.string "hash_password"
+    t.string "password_digest"
     t.integer "weight"
     t.integer "height"
     t.date "birth_day"
@@ -73,7 +62,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_25_110510) do
     t.string "sex"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "password_digest"
-    t.index ["username"], name: "index_users_on_username", unique: true
   end
+
+  add_foreign_key "exercise_schedules", "exercises"
+  add_foreign_key "exercise_schedules", "train_schedules"
+  add_foreign_key "progresses", "exercises"
+  add_foreign_key "progresses", "users"
+  add_foreign_key "train_schedules", "users"
 end

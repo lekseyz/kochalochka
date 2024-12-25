@@ -1,4 +1,9 @@
 class TrainSchedulesController < ApplicationController
+
+  def index
+    @exercises = Exercise.where(:user_id => params[:user_id])
+  end
+
   # Создание расписания
   def create
     Rails.logger.info "Creating train schedule for users ID: #{params[:user_id]} with days: #{params[:days].inspect}"
