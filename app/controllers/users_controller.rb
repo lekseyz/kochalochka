@@ -39,23 +39,16 @@ class UsersController < ApplicationController
 
   # Обновление данных пользователя
   def update
-    Rails.logger.info "Updating users with ID: #{params[:id]} and params: #{user_params.inspect}"
-
-    user = User.find_by(id: params[:id])
-    if user.nil?
-      Rails.logger.error "User not found with ID: #{params[:id]}"
-      render json: { error: 'User not found' }, status: :not_found
-      return
-    end
-
-    if user.update(user_params)
-      Rails.logger.info "User updated successfully: #{user.id}"
-      render json: { message: 'User updated successfully', user: user }
+    if current_user.update(account_params)
+      flash[:success] = "Данные аккаунта успешно обновлены."
+      redirect_to root_path
     else
-      Rails.logger.error "Failed to update users: #{user.errors.full_messages.join(', ')}"
-      render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
+      flash[:error] = "Ошибка обновления данных аккаунта: #{current_user.errors.full_messages.join(', ')}"
+      render :edit
     end
   end
+
+
 
   # Удаление пользователя
   def destroy
@@ -77,6 +70,10 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:username, :password, :password_confirmation, :weight, :height, :birth_day, :goal, :sex)
+  end
+
+  def account_params
+    params.require(:user).permit(:weight, :height, :goal)
   end
 
   def require_logged_in

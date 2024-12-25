@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   resources :progress, only: [:create, :index, :destroy]
   #REGISTRATION
-  resources :users, only: [:new, :create, :show]
+  resources :users, only: [:new, :create, :show, :update]
 
 
 
