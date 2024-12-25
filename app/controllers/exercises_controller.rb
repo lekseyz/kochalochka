@@ -1,49 +1,45 @@
 class ExercisesController < ApplicationController
-  # Добавление нового упражнения
-  def create
-    Rails.logger.info "Creating exercise with params: #{exercise_params.inspect}"
-    exercise = Exercise.new
-    if exercise.save
-      Rails.logger.info "Exercise created successfully: #{exercise.id}"
-      render json: { id: exercise.id, name: exercise.name }, status: :created
-    else
-      Rails.logger.error "Failed to create exercise: #{exercise.errors.full_messages.join(', ')}"
-      render json: { errors: exercise.errors.full_messages }, status: :unprocessable_entity
-    end
-  end
+  before_action :set_user
 
-  # Получение списка всех упражнений
   def index
-    Rails.logger.info "Fetching all exercises"
-    exercises = Exercise.all
-    render json: exercises
+    @exercises = Exercise
+                   .joins("LEFT JOIN progresses ON exercises.id = progresses.exercise_id AND progresses.user_id = #{@user.id}")
+                   .select('exercises.*, MAX(progresses.date) AS last_updated, progresses.reps, progresses.weight, progresses.duration, progresses.intensity')
+                   .where(id: @user.id)
+                   .group('exercises.id, progresses.reps, progresses.weight, progresses.duration, progresses.intensity')
   end
 
-  # Обновление упражнения
-  def update
-    Rails.logger.info "Updating exercise with ID: #{params[:id]} and params: #{exercise_params.inspect}"
-    exercise = Exercise.find(params[:id])
-    if exercise.update(exercise_params)
-      Rails.logger.info "Exercise updated successfully: #{exercise.id}"
-      render json: exercise
+  def new
+    @exercise = Exercise.new
+  end
+
+  def create
+    @exercise = Exercise.new(exercise_params)
+
+    if @exercise.save
+      /
+      DayExercise.create(
+        day_id: params[:day_id],
+        exercise_id: @exercise.id,
+        sets: params[:sets],
+        reps: params[:reps],
+        weight: params[:weight],
+        duration: params[:duration]
+      )
+      /
+      redirect_to user_exercises_path(@user), notice: 'Exercise was successfully added.'
     else
-      Rails.logger.error "Failed to update exercise: #{exercise.errors.full_messages.join(', ')}"
-      render json: { errors: exercise.errors.full_messages }, status: :unprocessable_entity
+      render :new
     end
   end
 
-  # Удаление упражнения
-  def destroy
-    Rails.logger.info "Deleting exercise with ID: #{params[:id]}"
-    exercise = Exercise.find(params[:id])
-    exercise.destroy
-    Rails.logger.info "Exercise deleted successfully: #{params[:id]}"
-    render json: { message: 'Exercise deleted successfully' }, status: :ok
-  end
+    private
 
-  private
+    def set_user
+    @user = User.find(params[:user_id])
+  end
 
   def exercise_params
-    params.permit(:name, :link, :muscle_group, :type)
+    params.require(:exercise).permit(:name, :muscle_group, :exercise_type, :link)
   end
 end

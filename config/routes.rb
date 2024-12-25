@@ -1,13 +1,14 @@
 Rails.application.routes.draw do
   get "home/index"
 
-  resources :exercises, only: [:create, :index, :update, :destroy]
-
   resources :schedules, only: [:create, :show, :update, :destroy]
 
   resources :progress, only: [:create, :index, :destroy]
   #REGISTRATION
   resources :users, only: [:new, :create, :show]
+  resources :users do
+    resources :exercises, only: [:edit, :index, :new, :create]
+  end
 
 
 

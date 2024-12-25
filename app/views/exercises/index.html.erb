@@ -1,0 +1,32 @@
+<h1>Your Exercises</h1>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Last Result</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @exercises.each do |exercise| %>
+    <tr>
+      <td><%= exercise.name %></td>
+      <td><%= exercise.exercise_type %></td>
+      <td>
+        <% if exercise.last_updated %>
+          <%= "#{exercise.reps} reps, #{exercise.weight} kg" if exercise.type == 'strength' %>
+          <%= "#{exercise.duration} min, #{exercise.intensity} intensity" if exercise.type == 'cardio' %>
+          <small>(updated on <%= exercise.last_updated %>)</small>
+        <% else %>
+          No progress recorded
+        <% end %>
+      </td>
+      <td>
+        <%= link_to 'Edit', edit_user_exercise_path(@user, exercise) %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= link_to 'Add Exercise', new_user_exercise_path(@user), class: 'btn btn-primary' %>

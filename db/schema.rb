@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_22_130730) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_25_110510) do
   create_table "day_exercises", force: :cascade do |t|
     t.integer "day_id", null: false
     t.integer "exercise_id", null: false
@@ -28,7 +28,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_22_130730) do
     t.string "link"
     t.string "name"
     t.string "muscle_group"
-    t.string "type"
+    t.string "exercise_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -76,4 +76,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_22_130730) do
     t.string "password_digest"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
+
+  add_foreign_key "day_exercises", "days"
+  add_foreign_key "day_exercises", "exercises"
+  add_foreign_key "progresses", "exercises"
+  add_foreign_key "progresses", "users"
+  add_foreign_key "train_days", "schedules"
+  add_foreign_key "train_schedules", "users"
 end

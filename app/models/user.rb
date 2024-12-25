@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  belongs_to :train_schedule
   # Валидации
   validates :username, presence: true, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }
