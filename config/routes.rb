@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   resources :users do
     resources :exercises, only: [ :edit, :index, :new, :create ]
   end
+  resources :users do
+    resources :train_schedules, only: [:update]
+  end
 
   get 'train_schedules/:user_id', to: 'train_schedules#index', as: 'train_schedules'
   get 'schedule/:user_id' => 'train_schedules#show'

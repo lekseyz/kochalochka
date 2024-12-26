@@ -1,26 +1,25 @@
 class TrainSchedulesController < ApplicationController
 
   def index
-    @exercises = Exercise.where(:user_id => params[:user_id])
+    exercises = Exercise.joins(exercise_schedules: :train_schedule)
+                        .joins("JOIN users ON users.id = train_schedules.user_id")
+                        .where("users.id = ?", params[:user_id])
+                        .select("exercise_schedules.day_of_week, exercises.name")
+
+    exercises_by_day = exercises.group_by(&:day_of_week)
+
+    all_days = %w[monday tuesday wednesday thursday friday saturday sunday]
+
+    @exercises_by_day = all_days.index_with { |day| exercises_by_day[day] || [] }
+
+    @user = User.find(params[:user_id])
+    @all_exercises = Exercise.all
   end
 
-  # Создание расписания
   def create
     Rails.logger.info "Creating train schedule for users ID: #{params[:user_id]} with days: #{params[:days].inspect}"
-    schedule = TrainSchedule.new
-    if schedule.save
-      params[:days].each do |day|
-        train_day = schedule.train_days.create!(day_of_week: day[:day_of_week])
-        day[:exercises].each do |exercise|
-          train_day.day_exercises.create!(exercise_id: exercise[:exercise_id], sets: exercise[:sets], reps: exercise[:reps], weight: exercise[:weight])
-        end
-      end
-      Rails.logger.info "Train schedule created successfully: #{schedule.id}"
-      render json: { id: schedule.id, user_id: schedule.user_id }, status: :created
-    else
-      Rails.logger.error "Failed to create train schedule: #{schedule.errors.full_messages.join(', ')}"
-      render json: { errors: schedule.errors.full_messages }, status: :unprocessable_entity
-    end
+    schedule = TrainSchedule.new(params[:user_id])
+    schedule.save
   end
 
   # Получение расписания
@@ -30,25 +29,28 @@ class TrainSchedulesController < ApplicationController
     render json: schedule.as_json(include: { train_days: { include: { day_exercises: { include: :exercise } } } })
   rescue ActiveRecord::RecordNotFound
     Rails.logger.error "Train schedule not found with ID: #{params[:id]}"
-    render json: { error: 'Train schedule not found' }, status: :not_found
+    render json: { error: "Train schedule not found" }, status: :not_found
   end
 
   # Обновление расписания
   def update
-    Rails.logger.info "Updating train schedule with ID: #{params[:id]} and days: #{params[:days].inspect}"
-    schedule = TrainSchedule.find(params[:id])
-    schedule.train_days.destroy_all
-    params[:days].each do |day|
-      train_day = schedule.train_days.create!(day_of_week: day[:day_of_week])
-      day[:exercises].each do |exercise|
-        train_day.day_exercises.create!(exercise_id: exercise[:exercise_id], sets: exercise[:sets], reps: exercise[:reps], weight: exercise[:weight])
-      end
+    Rails.logger.info "Updating train schedule for user with ID: #{params[:user_id]}, day: #{params[:day_of_week]}, exercise: #{params[:exercise_id]}"
+
+    user = User.find(params[:user_id])
+    train_schedule = user.train_schedule
+
+    exercise_schedule = ExerciseSchedule.find_or_initialize_by(
+      train_schedule_id: train_schedule.id,
+      day_of_week: params[:day_of_week]
+    )
+
+    exercise_schedule.exercise_id = params[:exercise_id]
+
+    if exercise_schedule.save
+      flash[:notice] = "Schedule updated successfully."
+    else
+      flash[:alert] = "Failed to update the schedule."
     end
-    Rails.logger.info "Train schedule updated successfully: #{schedule.id}"
-    render json: { message: 'Schedule updated successfully' }
-  rescue ActiveRecord::RecordNotFound
-    Rails.logger.error "Train schedule not found with ID: #{params[:id]}"
-    render json: { error: 'Train schedule not found' }, status: :not_found
   end
 
   # Удаление расписания
@@ -57,9 +59,9 @@ class TrainSchedulesController < ApplicationController
     schedule = TrainSchedule.find(params[:id])
     schedule.destroy
     Rails.logger.info "Train schedule deleted successfully: #{params[:id]}"
-    render json: { message: 'Schedule deleted successfully' }, status: :ok
+    render json: { message: "Schedule deleted successfully" }, status: :ok
   rescue ActiveRecord::RecordNotFound
     Rails.logger.error "Train schedule not found with ID: #{params[:id]}"
-    render json: { error: 'Train schedule not found' }, status: :not_found
+    render json: { error: "Train schedule not found" }, status: :not_found
   end
 end
