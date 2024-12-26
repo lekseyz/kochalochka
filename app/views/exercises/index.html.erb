@@ -5,11 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Exercises</title>
   <style>
+      /* Основные стили для body */
       body {
           font-family: 'Arial', sans-serif;
           background-color: #f4f7fc;
           margin: 0;
           padding: 0;
+          display: flex;
+          flex-direction: row;
+      }
+
+      /* Стили для боковой панели */
+      .sidebar {
+          background-color: #34495e;
+          color: white;
+          min-height: 100vh;
+          width: 250px;
+          padding: 20px;
+          position: fixed;
+          left: 0;
+          top: 0;
+          z-index: 10;
+      }
+
+      .sidebar a {
+          color: white;
+          display: block;
+          margin: 10px 0;
+          text-decoration: none;
+          font-weight: 500;
+      }
+
+      .sidebar a:hover {
+          color: #f39c12;
+      }
+
+      .sidebar button {
+          background-color: #f39c12;
+          border: none;
+          color: white;
+          width: 100%;
+          padding: 10px;
+          font-weight: 600;
+      }
+
+      .sidebar button:hover {
+          background-color: #e67e22;
+      }
+
+      /* Основной контент (с отступом слева для sidebar) */
+      .main-content {
+          margin-left: 260px;  /* Отступ, чтобы контент не перекрывался с sidebar */
+          padding: 20px;
+          width: calc(100% - 250px);
       }
 
       h1 {
@@ -19,8 +67,9 @@
           font-size: 2.5em;
       }
 
+      /* Таблица */
       table {
-          width: 80%;
+          width: 100%;
           margin: 20px auto;
           border-collapse: collapse;
           background-color: #ffffff;
@@ -46,11 +95,6 @@
           background-color: #f1f1f1;
       }
 
-      td small {
-          font-size: 0.8em;
-          color: #888;
-      }
-
       td a {
           text-decoration: none;
           color: #fff;
@@ -64,6 +108,7 @@
           background-color: #0056b3;
       }
 
+      /* Кнопка добавления упражнения */
       .btn {
           display: block;
           width: 200px;
@@ -85,41 +130,51 @@
 </head>
 <body>
 
-<h1>Your Exercises</h1>
-
-<table>
-  <thead>
-  <tr>
-    <th>Name</th>
-    <th>Type</th>
-    <th>Last Result</th>
-    <th>Actions</th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @exercises.each do |exercise| %>
-    <tr>
-      <td><%= exercise.name %></td>
-      <td><%= exercise.exercise_type %></td>
-      <td>
-        <% if exercise.last_updated %>
-          <%= "#{exercise.reps} reps, #{exercise.weight} kg" if exercise.exercise_type == 'strength' %>
-          <%= "#{exercise.duration} min, #{exercise.intensity} intensity" if exercise.exercise_type == 'cardio' %>
-          <small>(updated on <%= exercise.last_updated %>)</small>
-        <% else %>
-          No progress recorded
-        <% end %>
-      </td>
-      <td>
-        <%= link_to 'Edit', edit_user_exercise_path(@user, exercise), class: 'btn' %>
-      </td>
-    </tr>
+<!-- Боковая панель -->
+<nav class="sidebar">
+  <h4 class="text-center">Меню</h4>
+  <a href="/">Главная</a>
+  <% if session[:user_id] %>
+    <a href="<%= user_exercises_path(session[:user_id]) %>">Упражнения</a>
+    <%= button_to 'Выйти', session_path, method: :delete, class: 'btn btn-danger mt-3 w-100' %>
+  <% else %>
+    <a href="<%= new_session_path %>">Войти</a>
   <% end %>
-  </tbody>
-</table>
+</nav>
 
+<!-- Основной контент -->
+<div class="main-content">
+  <h1>Your Exercises</h1>
 
-<%= link_to 'Add Exercise', new_user_exercise_path(@user), class: 'btn' %>
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Last Result</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @exercises.each do |exercise| %>
+      <tr>
+        <td><%= exercise.name %></td>
+        <td><%= exercise.exercise_type %></td>
+        <td>
+          <% if exercise.last_updated %>
+            <%= "#{exercise.reps} reps, #{exercise.weight} kg" if exercise.exercise_type == 'strength' %>
+            <%= "#{exercise.duration} min, #{exercise.intensity} intensity" if exercise.exercise_type == 'cardio' %>
+            <small>(updated on <%= exercise.last_updated %>)</small>
+          <% else %>
+            No progress recorded
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to 'Add Exercise', new_user_exercise_path(@user), class: 'btn' %>
+</div>
 
 </body>
 </html>
