@@ -1,0 +1,8 @@
+john_doe:
+  username: john_doe
+  password_digest: <%= BCrypt::Password.create('password123') %>
+  weight: 70
+  height: 175
+  birth_day: '1990-01-01'
+  goal: 'Lose weight'
+  sex: 'male'

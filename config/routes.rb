@@ -19,9 +19,9 @@ Rails.application.routes.draw do
 
   #LOGIN
   root 'sessions#new'
-  #get 'login', to: 'sessions#new', as: 'login'    # Форма для логина
-  #post 'login', to: 'sessions#create'               # Логин
-  #delete 'logout', to: 'sessions#destroy', as: 'logout'  # Выход
+  get 'login', to: 'sessions#new', as: 'login'    # Форма для логина
+  post 'login', to: 'sessions#create'               # Логин
+  delete 'logout', to: 'sessions#destroy', as: 'logout'  # Выход
 
 
   resource :session, only: [ :new, :create, :destroy ]
