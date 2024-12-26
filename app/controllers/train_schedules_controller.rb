@@ -14,6 +14,7 @@ class TrainSchedulesController < ApplicationController
 
     @user = User.find(params[:user_id])
     @all_exercises = Exercise.all
+    @train_schedule = TrainSchedule.find_by(user_id: @user.id)|| TrainSchedule.create(user_id: @user.id)
   end
 
   def create
@@ -37,13 +38,22 @@ class TrainSchedulesController < ApplicationController
     Rails.logger.info "Updating train schedule for user with ID: #{params[:user_id]}, day: #{params[:day_of_week]}, exercise: #{params[:exercise_id]}"
 
     user = User.find(params[:user_id])
-    train_schedule = user.train_schedule
+    # Найти одно расписание для данного пользователя
+    train_schedule = TrainSchedule.find_by(user_id: user.id)
 
+    if train_schedule.nil?
+      flash[:alert] = "Train schedule not found for this user."
+      redirect_to user_train_schedule_path(user)
+      return
+    end
+
+    # Инициализируем или находим существующий ExerciseSchedule
     exercise_schedule = ExerciseSchedule.find_or_initialize_by(
       train_schedule_id: train_schedule.id,
       day_of_week: params[:day_of_week]
     )
 
+    # Присваиваем упражнение
     exercise_schedule.exercise_id = params[:exercise_id]
 
     if exercise_schedule.save
@@ -51,6 +61,9 @@ class TrainSchedulesController < ApplicationController
     else
       flash[:alert] = "Failed to update the schedule."
     end
+
+    # Перенаправление на страницу расписания
+    redirect_to user_train_schedule_path(user, train_schedule)
   end
 
   # Удаление расписания
