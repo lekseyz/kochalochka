@@ -57,7 +57,7 @@ group :development do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 5.1.2'
+  gem 'rspec-rails', '~> 7.1.0'
   gem 'rspec-core', '~> 3.13'
   gem 'faker', '~> 3.5.1'
   gem 'database_cleaner-active_record', '~> 2.0'
